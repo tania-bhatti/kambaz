@@ -18,7 +18,7 @@ export default function TOC() {
           <Link href="/labs/lab3">Lab 3</Link>
         </li>
         <li>
-          <Link href="/labs/lab4">Lab 4</Link>
+          <Link id="wd-lab4-link" href="/labs/lab4">Lab 4</Link>
         </li>
         <li>
           <Link id="wd-toc-book-link" href="/book/ch1">
