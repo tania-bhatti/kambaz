@@ -12,7 +12,7 @@ import YourForm from "./YourForm";
 export default function Forms() {
   return (
     <div id="wd-your-form">
-      <h4>Form Elements</h4>
+      <h4 id="wd-forms">Form Elements</h4>
       <form
         id="wd-text-fields"
         onSubmit={(event) => {
