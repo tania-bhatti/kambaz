@@ -15,7 +15,7 @@ export default function CourseCard({
   return (
     <div className="wd-dashboard-course">
       <Link href={`/courses/${id}/home`} className="wd-dashboard-course-link">
-        <Image src={image} width={200} height={150} alt={title} />
+        <Image src={image} width={200} height={150} alt={title} loading="eager"/>
         <div>
           <h5>{title}</h5>
           <p className="wd-dashboard-course-title">{subtitle}</p>
