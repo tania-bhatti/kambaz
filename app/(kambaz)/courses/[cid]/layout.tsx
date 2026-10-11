@@ -16,7 +16,7 @@ export default async function CoursesLayout({
       <table>
         <tbody>
           <tr>
-            <td valign="top" width="200">
+            <td valign="top" width="140">
               <CourseNavigation cid={cid} />
             </td>
             <td valign="top" width="100%">
