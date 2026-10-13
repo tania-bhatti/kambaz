@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "../kambaz.css"
 
-export default function KambazNavigation() {
+export default function AccountNavigation() {
   const pathname = usePathname() ?? "";
   return (
     <div id="wd-kambaz-navigation" className="wd list-group rounded-none text-lg">

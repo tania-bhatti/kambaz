@@ -7,7 +7,6 @@ import { LuBookText } from "react-icons/lu";
 import { LuCalendarDays } from "react-icons/lu";
 import { LuInbox } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
-import { TbLetterN } from "react-icons/tb";
 import Link from "next/link";
 
 export default function KambazNavigation() {
@@ -17,14 +16,19 @@ export default function KambazNavigation() {
       id="wd-kambaz-navigation"
       className="fixed bottom-0 top-0 z-20 hidden w-[120px] bg-black md:block"
     >
-      <Link
+      <a
         href="https://www.northeastern.edu/"
         id="wd-neu-link"
         className="block bg-black py-3 text-center text-sm text-white no-underline"
       >
-        <TbLetterN className="inline-block text-3xl text-red-500" />
-        <br />
-      </Link>
+        <img
+          src="/images/NEU.png"
+          width={75}
+          height={75}
+          alt="Northeastern University"
+          className="mx-auto"
+        />
+      </a>
       <Link
         href="/account"
         id="wd-account-link"
