@@ -1,49 +1,6 @@
-// import AssignmentItem from "./AssignmentItem";
-
-// export default async function Assignments({
-//   params,
-// }: {
-//   params: Promise<{ cid: string }>;
-// }) {
-//   const { cid } = await params;
-//   return (
-//     <div id="wd-assignments">
-//       <input 
-//         type="search" 
-//         id="wd-search-assignment" 
-//         name="q"
-//         placeholder="Search for Assignments"
-//         />
-//       <button id="wd-add-assignment-group">+ Group</button> 
-//       <button id="wd-add-assignment">+ Assignment</button>
-//       <h3 id="wd-assignments-title">ASSIGNMENTS 40% of Total <button>+</button></h3>
-      
-//       <ul id="wd-assignment-list">
-//         <AssignmentItem 
-//           cid={cid}
-//           aid="A1"
-//           title="A1 - ENV + HTML"
-//           details="Multiple Modules | Not available until May 6 at 12:00am | Due May 13 at 11:59pm | 100 pts"
-//         />
-//         <AssignmentItem 
-//           cid={cid}
-//           aid="A2"
-//           title="CSS + TAILWIND"
-//           details="Multiple Modules | Not available until May 13 at 12:00am | Due May 20 at 11:59pm | 100 pts"
-//         />
-//         <AssignmentItem
-//           cid={cid}
-//           aid="A3"
-//           title="JAVASCRIPT + REACT"
-//           details="Multiple Modules | Not available until May 20 at 12:00am | Due May 27 at 11:59pm | 100 pts"
-//         />
-//       </ul>
-//     </div>
-//   );
-// }
-
 import { FaPlus, FaSearch } from "react-icons/fa";
 import AssignmentItem from "./AssignmentItem";
+import * as db from "../../../database";
 
 export default async function Assignments({
   params,
@@ -51,6 +8,10 @@ export default async function Assignments({
   params: Promise<{ cid: string }>;
 }) {
   const { cid } = await params;
+  const assignments = db.assignments.filter(
+    (assignment) => assignment.course === cid,
+  );
+
   return (
     <div id="wd-assignments">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -89,6 +50,17 @@ export default async function Assignments({
         </button>
       </h3>
       <ul id="wd-assignment-list" className="m-0 list-none p-0">
+        {assignments.map((assignment) => (
+          <AssignmentItem
+            key={assignment._id}
+            cid={cid}
+            aid={assignment._id}
+            title={assignment.title}
+            details={`Multiple Modules | Not available until ${assignment.available} | Due ${assignment.due} | ${assignment.points} pts`}
+          />
+        ))}
+      </ul>
+      {/* <ul id="wd-assignment-list" className="m-0 list-none p-0">
         <AssignmentItem
           cid={cid}
           aid="123"
@@ -119,7 +91,7 @@ export default async function Assignments({
           title="A9 - Sample assignment"
           details="Multiple Modules | Not available until June 3 at 12:00am | Due June 10 at 11:59pm | 100 pts"
         />
-      </ul>
+      </ul> */}
     </div>
   );
 }

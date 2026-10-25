@@ -3,11 +3,22 @@
 import { usePathname } from "next/navigation";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { FaRegCircleUser, FaCircleQuestion } from "react-icons/fa6";
+import { IoCalendarOutline } from "react-icons/io5";
 import { LuBookText } from "react-icons/lu";
 import { LuCalendarDays } from "react-icons/lu";
 import { LuInbox } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
 import Link from "next/link";
+
+const LINKS = [
+  {label: "Dashboard", path: "/dashboard", icon: AiOutlineDashboard}, 
+  {label: "Courses", path: "/courses", icon: LuBookText}, 
+  {label: "Calendar", path: "/calendar", icon: LuCalendarDays}, 
+  {label: "Inbox", path: "/inbox", icon: LuInbox}, 
+  {label: "Labs", path: "/labs", icon: LuSettings},
+  {label: "History", path: "/history", icon: IoCalendarOutline},
+  {label: "LabsAI", path: "/labs", icon: FaCircleQuestion},
+] as const; 
 
 export default function KambazNavigation() {
   const pathname = usePathname() ?? "";
@@ -21,6 +32,7 @@ export default function KambazNavigation() {
         id="wd-neu-link"
         className="block bg-black py-3 text-center text-sm text-white no-underline"
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/NEU.png"
           width={75}
@@ -33,7 +45,7 @@ export default function KambazNavigation() {
         href="/account"
         id="wd-account-link"
         className={`block py-3 text-center text-sm no-underline
-          ${pathname == "/account" || pathname.startsWith("/account/")
+          ${pathname.startsWith("/account/")
             ? "bg-white text-red-600"
             : "bg-black text-white"
           }
@@ -43,90 +55,26 @@ export default function KambazNavigation() {
         <br />
         Account
       </Link>
-      <Link
-        href="/dashboard"
-        id="wd-dashboard-link"
-        className={`block py-3 text-center text-sm text-red-600 no-underline
-          ${pathname == "/dashboard" || pathname.startsWith("/dashboard/")
-            ? "bg-white text-red-600"
-            : "bg-black text-white"
-          }
-        `}
-      >
-        <AiOutlineDashboard className="inline-block text-3xl text-red-600" />
-        <br />
-        Dashboard
-      </Link>
-      <Link 
-        href="/courses"
-        id="wd-courses-link"
-        className={`block py-3 text-center text-sm no-underline
-          ${pathname == "/courses" || pathname.startsWith("/courses/")
-            ? "bg-white text-red-600"
-            : "bg-black text-white"
-          }
-        `}
-      >
-        <LuBookText className="inline-block text-3xl text-red-600" />
-        <br />
-        Courses
-      </Link>
-      <Link 
-        href="/calendar"
-        id="wd-calendar-link"
-        className={`block py-3 text-center text-sm no-underline
-          ${pathname == "/calendar" || pathname.startsWith("/calendar/")
-            ? "bg-white text-red-600"
-            : "bg-black text-white"
-          }
-        `}
-      >
-        <LuCalendarDays className="inline-block text-3xl text-red-600" />
-        <br /> 
-        Calendar
-      </Link>
-      <Link 
-        href="/inbox"
-        id="wd-inbox-link"
-        className={`block py-3 text-center text-sm no-underline
-          ${pathname == "/inbox" || pathname.startsWith("/inbox/")
-            ? "bg-white text-red-600"
-            : "bg-black text-white"
-          } 
-        `}
-      >
-        <LuInbox className="inline-block text-3xl text-red-600" />
-        <br /> 
-        Inbox
-      </Link>
-      <Link 
-        href="/labs"
-        id="wd-labs-link"
-        className={`block py-3 text-center text-sm no-underline
-          ${pathname == "/labs" || pathname.startsWith("/labs/")
-            ? "bg-white text-red-600"
-            : "bg-black text-white"
-          }
-        `}
-      >
-        <LuSettings className="inline-block text-3xl text-red-600" />
-        <br /> 
-        Labs
-      </Link>
-      <Link
-        href="/labs"
-        id="wd-ai-nav-help"
-        className={`block py-3 text-center text-sm no-underline
-          ${pathname == "/labs" || pathname.startsWith("/labs/")
-            ? "bg-white text-red-600"
-            : "bg-black text-white"
-          }
-        `}
-      >
-        <FaCircleQuestion className="inline-block text-3xl text-red-600" />
-        <br />
-        Help
-      </Link>
+      {LINKS.map((link) => {
+        const active = 
+          link.label === "Courses" 
+            ? pathname.includes("/courses") 
+            : pathname.includes(link.path); 
+        const Icon = link.icon; 
+        return (
+          <Link 
+            key={link.label}
+            href={link.path} 
+            id={`wd-${link.label.toLowerCase()}-link`}
+            className={`block py-3 text-center text-sm no-underline ${
+              active ? "bg-white text-red-600" : "bg-black text-white" 
+            }`}
+          >
+            <Icon className="inline-block text-3xl text-red-600" /> <br /> 
+            {link.label}
+          </Link>
+        )
+      })}
     </nav>
   );
 }
