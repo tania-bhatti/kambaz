@@ -40,6 +40,10 @@ export default function Dashboard() {
         onChange={(e) => setCourse({ ...course, name: e.target.value })} />
       <textarea rows={3} value={course.description} id="wd-course-description" className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) => setCourse({ ...course, description: e.target.value })} />
+      <input value={course.number} id="wd-course-number" className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5" 
+        onChange={(e) => setCourse({ ...course, number: e.target.value })} />
+      <input type="date" value={course.startDate} id="wd-course-startDate" className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        onChange={(e) => setCourse({ ...course, startDate: e.target.value })} />
       <hr />
       <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
       <hr />
