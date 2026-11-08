@@ -1,15 +1,24 @@
+"use client"
+
 import Link from "next/link";
+import { useParams, useRouter} from "next/navigation";
+import { useState } from "react"; 
+import { useAssignmentsStore } from "@/app/(kambaz)/store/assignmentsStore";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineCalendarMonth } from "react-icons/md";
-import * as db from "../../../../database";
 
-export default async function AssignmentEditor({
-  params, 
-}: {
-  params: Promise<{ cid: string; aid: string }>;
-}) {
-  const { cid, aid } = await params; 
-  const assignment = db.assignments.find((a) => a._id === aid);
+export default  function AssignmentEditor() {
+  const { cid, aid } = useParams<{ cid: string, aid: string }>(); 
+  const router = useRouter(); 
+  const { assignments, addAssignment, updateAssignment } = useAssignmentsStore(); 
+  const assignment = assignments.find((a) => a._id === aid);
+  
+  const [title, setTitle] = useState(assignment?.title ?? "");
+  const [points, setPoints] = useState(assignment?.points ?? 100); 
+  const [due, setDue] = useState(assignment?.due ?? ""); 
+  const [available, setAvailable] = useState(assignment?.available ?? ""); 
+  const [description, setDescription] = useState(assignment?.description ?? "");
+
   return (
     <div id="wd-assignments-editor">
       <label htmlFor="wd-name">Assignment Name</label>
@@ -17,14 +26,16 @@ export default async function AssignmentEditor({
       <input 
         id="wd-name" 
         className="rounded-xs border border-gray-300 py-2 pl-2 w-150 text-sm"
-        defaultValue= {assignment?.title ?? ""} 
+        value={title} 
+        onChange={(e) => setTitle(e.target.value)} 
       />
       <br />
       <p id="wd-assignment-id" className="mt-2 text-sm text-gray-600">Assignment id: {aid}</p>
       <textarea
         id="wd-description"
         className="mb-4 ps-3 pt-6 h-80 w-150 rounded-xs border border-gray-300 text-sm"
-        defaultValue={assignment?.description ?? ""}
+        value={description} 
+        onChange={(e) => setDescription(e.target.value)}
       >
       </textarea>
       <br />
@@ -34,7 +45,8 @@ export default async function AssignmentEditor({
           <input 
             id="wd-points" 
             className="rounded-xs border border-gray-300 ms-2 mb-4 py-2 pl-2 w-110 text-sm"
-            defaultValue={assignment?.points ?? 100} 
+            value={points} 
+            onChange={(e) => setPoints(Number(e.target.value))}
           />
         </div>
         <div className="flex justify-end">
@@ -142,7 +154,8 @@ export default async function AssignmentEditor({
                 <input 
                   className="flex-1 border-0 py-2 pl-2 text-sm"
                   type="date"
-                  defaultValue={assignment?.due}
+                  value={due} 
+                  onChange={(e) => setDue(e.target.value)}
                   min="2026-09-27"
                   max="2026-12-20"
                   id="wd-due-date"
@@ -158,7 +171,8 @@ export default async function AssignmentEditor({
                   <input 
                     className="flex-1 border-0 py-2 pl-2 text-sm"
                     type="date"
-                    defaultValue={assignment?.available}
+                    value={available} 
+                    onChange={(e) => setAvailable(e.target.value)}
                     min="2026-09-27"
                     max="2026-12-20"
                     id="wd-available-from"
@@ -198,9 +212,19 @@ export default async function AssignmentEditor({
         <Link href={`/courses/${cid}/assignments`} id="wd-cancel" className="rounded border px-3 py-2 border-gray-300 bg-gray-100 text-black no-underline">
           Cancel
         </Link>{" "}
-        <Link href={`/courses/${cid}/assignments`} id="wd-save" className="rounded border px-3 py-2 border-red-700 bg-red-700 text-white no-underline">
+        <button
+          type="button"
+          id="wd-save"
+          onClick={() => { 
+            if (!title.trim()) return;
+            assignment ? updateAssignment({...assignment, title, description, points, due, available }) 
+            : addAssignment({ title, description, course: cid, points, due, available})
+            router.push(`/courses/${cid}/assignments`);
+          }}
+          className="rounded border px-3 py-2 border-red-700 bg-red-700 text-white no-underline"
+        >
           Save
-        </Link>
+        </button>
       </div>
     </div>
   );
