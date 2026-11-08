@@ -1,0 +1,42 @@
+export default function PassingFunctions({
+  message,
+  theFunction,
+  theOtherFunction,
+  nameFunction,
+}: {
+  message: string;
+  theFunction: (message: string) => void;
+  theOtherFunction: () => void;
+  nameFunction: () => void;
+}) {
+  return (
+    <div id="wd-passing-functions">
+      <h2>Passing Functions</h2>
+      <button
+        type="button"
+        onClick={() => theFunction(`From parent: ${message}`)}
+        id="wd-pass-functions-click"
+        className="rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Invoke the Function
+      </button>
+      <button
+        type="button"
+        onClick={() => theOtherFunction()}
+        id="wd-pass-functions-other-click"
+        className="ml-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Invoke the Other Function
+      </button>
+      <button
+        type="button"
+        onClick={() => nameFunction()}
+        id="wd-pass-functions-on-your-own"
+        className="ml-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Invoke Function On Your Own
+      </button>
+      <hr />
+    </div>
+  );
+}
