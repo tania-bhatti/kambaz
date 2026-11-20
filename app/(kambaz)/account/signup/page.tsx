@@ -8,6 +8,7 @@ import { useAccountContext } from "../AccountContext";
 export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("STUDENT");
   const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
@@ -20,7 +21,7 @@ export default function Signup() {
       firstName: "",
       lastName: "",
       email: "",
-      role: "STUDENT",
+      role,
       loginId: "",
       section: "",
       lastActivity: "",
@@ -47,6 +48,15 @@ export default function Signup() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <select
+        id="wd-role"
+        className="block w-[300px] appearance-none rounded-md border border-gray-300 py-2 pl-2 mb-2 text-sm"
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+      >
+        <option value="FACULTY">Faculty</option>
+        <option value="STUDENT">Student</option>
+      </select>
       <button type="button" onClick={signup} id="wd-signup-btn" className="mb-2 block cursor-pointer w-[300px] rounded bg-green-600 px-3 py-2 text-center text-white no-underline">
         Sign up
       </button>{" "}
