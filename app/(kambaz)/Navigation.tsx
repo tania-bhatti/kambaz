@@ -25,7 +25,7 @@ export default function KambazNavigation() {
   return (
     <nav
       id="wd-kambaz-navigation"
-      className="fixed bottom-0 top-0 z-20 hidden w-[120px] bg-black md:block"
+      className="fixed bottom-0 top-0 left-0 z-20 hidden w-[120px] bg-black md:block"
     >
       <a
         href="https://www.northeastern.edu/"
