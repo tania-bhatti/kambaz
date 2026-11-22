@@ -7,7 +7,7 @@ import { useAssignmentsStore } from "@/app/(kambaz)/store/assignmentsStore";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineCalendarMonth } from "react-icons/md";
 
-export default  function AssignmentEditor() {
+export default function AssignmentEditor() {
   const { cid, aid } = useParams<{ cid: string, aid: string }>(); 
   const router = useRouter(); 
   const { assignments, addAssignment, updateAssignment } = useAssignmentsStore(); 
