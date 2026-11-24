@@ -15,7 +15,7 @@ export default function Breadcrumb({
       : section.charAt(0).toUpperCase() + section.slice(1);
   return (
     <span>
-      {course?.name} &gt; {label}
+      {course?.name} &gt; {label} 
     </span>
   );
 }
