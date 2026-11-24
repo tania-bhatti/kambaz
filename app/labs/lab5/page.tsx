@@ -1,5 +1,12 @@
 import "../lab2/tailwind/utilities.css";
 import Environment from "./Environment";
+import PathParamters from "./PathParameters";
+import QueryParameter from "./QueryParameters";
+import WorkingWithRemoteObjects from "./WorkingWithRemoteObjects";
+import WorkingWithRemoteArrays from "./WorkingWithRemoteArrays";
+import HttpClient from "./HttpClient";
+import WorkingWithRemoteObjectsAsynchronously from "./WorkingWithRemoteObjectsAsync";
+import WorkingWithRemoteArraysAsynchronously from "./WorkingWithRemoteArraysAsync";
 
 export default function Lab5() {
   const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
@@ -15,6 +22,13 @@ export default function Lab5() {
       </a>
 
       <Environment />
+      <PathParamters />
+      <QueryParameter />
+      <WorkingWithRemoteObjects />
+      <WorkingWithRemoteArrays />
+      <HttpClient />
+      <WorkingWithRemoteObjectsAsynchronously />
+      <WorkingWithRemoteArraysAsynchronously />
     </div>
   );
 }
