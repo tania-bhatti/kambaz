@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
 import {
   emptyCourse,
@@ -9,14 +9,17 @@ import {
 } from "../store/coursesStore";
 import { useEnrollmentsStore } from "../store/enrollmentsStore";
 import { useAccountContext } from "../account/AccountContext";
+import * as client from "../courses/client";
 
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
   const addCourse = useCoursesStore((state) => state.addCourse);
   const updateCourse = useCoursesStore((state) => state.updateCourse);
+  const setCourses = useCoursesStore((state) => state.setCourses);
+  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const [course, setCourse] = useState<Course>(emptyCourse);
   const { currentUser } = useAccountContext();
-  const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
+  const { enrollments } = useEnrollmentsStore();
   const [showAllCourses, setShowAllCourses] = useState(false);
   const isEnrolled = (courseId: string) =>
     currentUser !== null &&
@@ -27,11 +30,25 @@ export default function Dashboard() {
     currentUser && !showAllCourses
       ? courses.filter((c) => isEnrolled(c._id))
       : courses;
-  const addCourseAndEnroll = () => {
-    addCourse(course);
-    const newCourse = useCoursesStore.getState().courses.at(-1);
-    if (currentUser && newCourse) enrollIntoCourse(currentUser._id, newCourse._id);
+  const onAddCourse = async () => {
+    const newCourse = await client.createCourse(course);
+    addCourse(newCourse);
   };
+  const onDeleteCourse = async (courseId: string) => {
+    await client.deleteCourse(courseId);
+    deleteCourse(courseId);
+  };
+  const onUpdateCourse = async () => {
+    const saved = await client.updateCourse(course);
+    updateCourse(saved);
+  };
+  useEffect(() => {
+    if (!currentUser) return;
+    const load = async () => {
+      setCourses(await client.findMyCourses());
+    };
+    load();
+  }, [currentUser]);
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title" className="flex items-center justify-between">
@@ -47,9 +64,9 @@ export default function Dashboard() {
       <h5 className="flex flex-wrap items-center gap-2">
         New Course
         <button type="button" id="wd-add-new-course-click" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-          onClick={addCourseAndEnroll} >          Add        </button>
+          onClick={onAddCourse} >          Add        </button>
         <button type="button" id="wd-update-course-click" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
-          onClick={() => updateCourse(course)} >  Update     </button>
+          onClick={onUpdateCourse} >  Update     </button>
       </h5>
       <input value={course.name} id="wd-course-name" className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) => setCourse({ ...course, name: e.target.value })} />
@@ -62,13 +79,14 @@ export default function Dashboard() {
       <input type="date" value={course.startDate} id="wd-course-startDate" className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) => setCourse({ ...course, startDate: e.target.value })} />
       <hr />
-      <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
+      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
       <hr />
       <div id="wd-dashboard-courses" className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4" >
-        {visibleCourses.map((c) => (
+        {courses.map((c) => (
           <CourseCard key={c._id}
             course={c}
-            onEdit={() => setCourse(c)} />
+            onEdit={() => setCourse(c)}
+            onDelete={onDeleteCourse} />
         ))}
       </div>
     </div>

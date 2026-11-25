@@ -3,11 +3,7 @@ import { BsPlus } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModuleControlButtons({
-  moduleId,
-}: {
-  moduleId: string;
-}) {
+export default function ModuleControlButtons({ moduleId, onRemoveModule }: { moduleId: string; onRemoveModule: (id: string) => void }) {
   const deleteModule = useModulesStore((state) => state.deleteModule);
   const editModule = useModulesStore((state) => state.editModule);
   return (
@@ -19,7 +15,7 @@ export default function ModuleControlButtons({
       />
       <FaTrash
         className="cursor-pointer text-red-600"
-        onClick={() => deleteModule(moduleId)}
+        onClick={() => onRemoveModule(moduleId)}
         title="Delete module"
       />
       <FaCheckCircle className="text-green-600" />

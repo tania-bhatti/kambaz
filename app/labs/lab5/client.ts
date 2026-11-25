@@ -11,7 +11,7 @@ export const fetchAssignment = async () => {
   return response.data;
 };
 export const updateTitle = async (title: string) => {
-  const response = await axios.get(`${ASSIGNMENT_API}/title/${title}`);
+  const response = await axios.get(`${ASSIGNMENT_API}/title/${encodeURIComponent(title)}`);
   return response.data;
 };
 
@@ -43,3 +43,21 @@ export const updateTodo = async (todo: { id: number }) => {
   const response = await axios.put(`${TODOS_API}/${todo.id}`, todo);
   return response.data;
 };
+
+export const fetchHello = async () => {
+  const response = await fetch("/api/lab5/hello");
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+  return response.json();
+};
+
+export const fetchCalc = async (a: number, b: number, operation: string) => {
+  const params = new URLSearchParams({
+    a: String(a), 
+    b: String(b), 
+    operation,
+  });
+  const response = await fetch (`/api/lab5/calculator?${params}`);
+  return response.json();
+}

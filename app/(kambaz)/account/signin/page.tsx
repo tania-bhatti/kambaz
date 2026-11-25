@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import * as db from "../../database";
 import { useAccountContext } from "../AccountContext";
+import * as client from "../client";
 
 export default function Signin() {
   const [credentials, setCredentials] = useState({
@@ -14,17 +14,12 @@ export default function Signin() {
   const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
-  const signin = () => {
-    const user = db.users.find(
-      (u) =>
-        u.username === credentials.username &&
-        u.password === credentials.password,
-    );
+  const signin = async () => {
+    const user = await client.signin(credentials);
     if (!user) return;
     setCurrentUser(user);
     router.push("/dashboard");
   };
-
   return (
     <div id="wd-signin-screen" className="max-w-sm">
       <h3 className="mb-3 text-2xl font-semibold">Sign in</h3>
