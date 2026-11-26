@@ -4,6 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
+  { href: "https://github.com/tania-bhatti/kambaz/tree/main", id: "wd-github", label: "Next.js Repo", match: () => false },
+  { href: "https://github.com/tania-bhatti/webdev-server", id: "wd-node-github", label: "Node Repo", match: () => false },
+  { href: "https://webdev-server-y1xy.onrender.com", id: "wd-render-root-url", label: "Render Root URL", match: () => false },
   { href: "/labs", id: "wd-home-link", label: "Home", match: (p: string) => p === "/labs" },
   { href: "/labs/lab1", id: "wd-lab1-link", label: "Lab 1", match: (p: string) => p.endsWith("/lab1") || p.includes("/lab1/") },
   { href: "/labs/lab2", id: "wd-lab2-link", label: "Lab 2", match: (p: string) => p.includes("/lab2") },
