@@ -4,12 +4,14 @@ import { FaTrash } from "react-icons/fa";
 import { useAssignmentsStore } from "@/app/(kambaz)/store/assignmentsStore";
 
 export default function AssignmentItem({
-  cid, aid, title, details,
+  cid, aid, title, details, onDeleteAssignment, onUpdateAssignment
 }: {
   cid: string;
   aid: string;
   title: string;
   details: string;
+  onDeleteAssignment: () => void;
+  onUpdateAssignment: () => void;
 }) {
   const deleteAssignment = useAssignmentsStore((state) => state.deleteAssignment); 
 
@@ -26,7 +28,7 @@ export default function AssignmentItem({
         <div className="mt-1 text-sm text-neutral-600">{details}</div>
       </div>
       <FaTrash className="mt-1 shrink-0 text-xl text-red-700 cursor-pointer" 
-        onClick={() => deleteAssignment(aid)}
+        onClick={onDeleteAssignment}
         title="Delete assignment"
       />
     </li>

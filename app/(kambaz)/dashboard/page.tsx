@@ -10,6 +10,7 @@ import {
 import { useEnrollmentsStore } from "../store/enrollmentsStore";
 import { useAccountContext } from "../account/AccountContext";
 import * as client from "../courses/client";
+import { findMyEnrollments } from "../enrollments/client";
 
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
@@ -19,7 +20,7 @@ export default function Dashboard() {
   const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const [course, setCourse] = useState<Course>(emptyCourse);
   const { currentUser } = useAccountContext();
-  const { enrollments } = useEnrollmentsStore();
+  const { enrollments, setEnrollments } = useEnrollmentsStore();
   const [showAllCourses, setShowAllCourses] = useState(false);
   const isEnrolled = (courseId: string) =>
     currentUser !== null &&
@@ -45,7 +46,8 @@ export default function Dashboard() {
   useEffect(() => {
     if (!currentUser) return;
     const load = async () => {
-      setCourses(await client.findMyCourses());
+      setCourses(await client.fetchAllCourses());
+      setEnrollments(await findMyEnrollments());
     };
     load();
   }, [currentUser]);
@@ -82,7 +84,7 @@ export default function Dashboard() {
       <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
       <hr />
       <div id="wd-dashboard-courses" className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4" >
-        {courses.map((c) => (
+        {visibleCourses.map((c) => (
           <CourseCard key={c._id}
             course={c}
             onEdit={() => setCourse(c)}

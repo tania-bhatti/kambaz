@@ -9,6 +9,7 @@ type EnrollmentsStore = {
   enrollments: Enrollment[];
   enrollIntoCourse: (userId: string, courseId: string) => void;
   unenrollFromCourse: (userId: string, courseId: string) => void;
+  setEnrollments: (enrollments: Enrollment[]) => void; 
 };
 
 export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
@@ -26,4 +27,5 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
         (e) => !(e.user === userId && e.course === courseId),
       ),
     })),
+  setEnrollments: (enrollments: Enrollment[]) => set({ enrollments }),
 }));

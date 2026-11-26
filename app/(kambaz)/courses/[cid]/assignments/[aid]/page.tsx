@@ -6,19 +6,28 @@ import { useState } from "react";
 import { useAssignmentsStore } from "@/app/(kambaz)/store/assignmentsStore";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineCalendarMonth } from "react-icons/md";
+import * as client from "../../../client";
 
 export default  function AssignmentEditor() {
   const { cid, aid } = useParams<{ cid: string, aid: string }>(); 
   const router = useRouter(); 
   const { assignments, addAssignment, updateAssignment } = useAssignmentsStore(); 
   const assignment = assignments.find((a) => a._id === aid);
-  
+
   const [title, setTitle] = useState(assignment?.title ?? "");
   const [points, setPoints] = useState(assignment?.points ?? 100); 
   const [due, setDue] = useState(assignment?.due ?? ""); 
   const [available, setAvailable] = useState(assignment?.available ?? ""); 
   const [description, setDescription] = useState(assignment?.description ?? "");
 
+  const onUpdateAssignment = async (assignment: { _id: string; [key: string]: unknown}) => {
+    const saved = await client.updateAssignment(assignment);
+    updateAssignment(saved);
+  };
+  const onAddAssignment = async (newAssignment: object) => {
+    const created = await client.createAssignmentForCourse(cid, newAssignment);
+    addAssignment(created);
+  };
   return (
     <div id="wd-assignments-editor">
       <label htmlFor="wd-name">Assignment Name</label>
@@ -217,8 +226,8 @@ export default  function AssignmentEditor() {
           id="wd-save"
           onClick={() => { 
             if (!title.trim()) return;
-            assignment ? updateAssignment({...assignment, title, description, points, due, available }) 
-            : addAssignment({ title, description, course: cid, points, due, available})
+            assignment ? onUpdateAssignment({...assignment, title, description, points, due, available }) 
+            : onAddAssignment({ title, description, course: cid, points, due, available})
             router.push(`/courses/${cid}/assignments`);
           }}
           className="rounded border px-3 py-2 border-red-700 bg-red-700 text-white no-underline"
